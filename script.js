@@ -1,4 +1,4 @@
-const MIN_YEAR = 1000;
+const MIN_YEAR = 1900;
 const MAX_YEAR = 2026;
 const TARGET_YEAR = 1987;
 
@@ -15,24 +15,65 @@ let timerHandle = null;
 let attemptCount = 0;
 let running = false;
 
+const ONES = [
+  'zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine',
+  'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen',
+  'seventeen', 'eighteen', 'nineteen'
+];
+
+const TENS = [
+  '', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'
+];
+
+function underHundred(n) {
+  if (n < 20) return ONES[n];
+  const tens = Math.floor(n / 10);
+  const ones = n % 10;
+  return ones === 0 ? TENS[tens] : `${TENS[tens]}-${ONES[ones]}`;
+}
+
+function underThousand(n) {
+  if (n < 100) return underHundred(n);
+  const hundreds = Math.floor(n / 100);
+  const remainder = n % 100;
+  if (remainder === 0) return `${ONES[hundreds]} hundred`;
+  return `${ONES[hundreds]} hundred and ${underHundred(remainder)}`;
+}
+
+function numberToWords(n) {
+  if (n < 1000) return underThousand(n);
+  const thousands = Math.floor(n / 1000);
+  const remainder = n % 1000;
+  const thousandWords = underThousand(thousands);
+  if (remainder === 0) return `${thousandWords} thousand`;
+  return `${thousandWords} thousand ${underThousand(remainder)}`;
+}
+
+function titleCase(text) {
+  return text.replace(/\b\w/g, (char) => char.toUpperCase());
+}
+
 function buildHellDropdown() {
   const placeholder = document.createElement('option');
   placeholder.value = '';
   placeholder.textContent = 'Choose a year...';
   yearSelect.replaceChildren(placeholder);
 
-  // Deliberate UX crime: sort years alphabetically as strings, not numerically.
+  // Deliberate UX crime: spell every year out, then sort alphabetically by the words.
   const years = [];
   for (let year = MIN_YEAR; year <= MAX_YEAR; year++) {
-    years.push(String(year));
+    years.push({
+      value: String(year),
+      label: titleCase(numberToWords(year))
+    });
   }
 
-  years.sort((a, b) => a.localeCompare(b));
+  years.sort((a, b) => a.label.localeCompare(b.label));
 
   for (const year of years) {
     const option = document.createElement('option');
-    option.value = year;
-    option.textContent = year;
+    option.value = year.value;
+    option.textContent = year.label;
     yearSelect.appendChild(option);
   }
 }
