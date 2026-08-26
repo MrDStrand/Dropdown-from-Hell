@@ -1,4 +1,4 @@
-const MIN_YEAR = 1900;
+const MIN_YEAR = 1000;
 const MAX_YEAR = 2026;
 const TARGET_YEAR = 1987;
 
