@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dropdown from Hell</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="game-shell">
+    <section class="card" aria-labelledby="game-title">
+      <div class="eyebrow">Worst UX Olympics · Case 2</div>
+      <h1 id="game-title">Dropdown from Hell</h1>
+      <p class="intro">
+        Your mission is simple: select the target birth year from the dropdown.
+        The interface is not.
+      </p>
+
+      <div class="status-grid">
+        <div class="status-box">
+          <span class="status-label">Target year</span>
+          <strong id="targetYear">1987</strong>
+        </div>
+        <div class="status-box">
+          <span class="status-label">Time</span>
+          <strong id="timer">0.000 s</strong>
+        </div>
+        <div class="status-box">
+          <span class="status-label">Attempts</span>
+          <strong id="attempts">0</strong>
+        </div>
+      </div>
+
+      <div class="controls">
+        <label for="yearSelect">Select your birth year</label>
+        <select id="yearSelect" disabled>
+          <option value="">Choose a year...</option>
+        </select>
+        <p class="hint">Typing to jump is disabled. Scrolling is your friend. Probably.</p>
+      </div>
+
+      <div class="actions">
+        <button id="startButton" type="button">Start challenge</button>
+        <button id="resetButton" type="button" class="secondary">Reset</button>
+      </div>
+
+      <div id="message" class="message" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
